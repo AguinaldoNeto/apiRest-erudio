@@ -1,8 +1,7 @@
 package br.com.aguinaldo.neto.restwithspringbootandjava.exceptions.handler;
 
 import br.com.aguinaldo.neto.restwithspringbootandjava.exceptions.ExceptionResponse;
-import br.com.aguinaldo.neto.restwithspringbootandjava.exceptions.UnsupportMathOperationException;
-import org.springframework.http.HttpStatus;
+import br.com.aguinaldo.neto.restwithspringbootandjava.exceptions.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,8 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Date;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @ControllerAdvice
@@ -27,11 +25,11 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
         return new ResponseEntity<>(exceptionResponse, INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(UnsupportMathOperationException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
     public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception ex, WebRequest request) {
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 
-        return new ResponseEntity<>(exceptionResponse, BAD_REQUEST);
+        return new ResponseEntity<>(exceptionResponse, NOT_FOUND);
     }
 }
